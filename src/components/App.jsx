@@ -8,12 +8,12 @@ export const App = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
-  /* useEffect(() => {
+  useEffect(() => {
     const ls = localStorage.getItem('contacts');
     const lsParse = JSON.parse(ls);
-    console.log('lsParse', lsParse);
-    return setContacts(lsParse);
-  }, []); */
+
+    return () => setContacts(lsParse);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -34,7 +34,6 @@ export const App = () => {
     setContacts([...contacts, { name, number, id }]);
 
     form.reset();
-    /* localStorage.setItem('contacts', JSON.stringify(contacts)); */
   };
 
   const handleFilter = event => {
@@ -45,9 +44,9 @@ export const App = () => {
   const handleDelete = event => {
     const id = event.currentTarget.id;
     const index = contacts.findIndex(contact => contact.id === id);
-    const arrOfContacts = contacts;
-    arrOfContacts.splice(index, 1);
-    setContacts(arrOfContacts);
+    const allContacts = contacts;
+    allContacts.splice(index, 1);
+    setContacts([...allContacts]);
   };
 
   return (
